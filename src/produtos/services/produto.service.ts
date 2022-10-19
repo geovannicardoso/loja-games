@@ -10,6 +10,7 @@ export class ProdutoService {
         @InjectRepository(Produto)
         private produtoRepository: Repository<Produto>
     ) { }
+
     async findAll(): Promise<Produto[]> {
         return await this.produtoRepository.find();
     }
@@ -37,5 +38,17 @@ export class ProdutoService {
         return await this.produtoRepository.save(produto);
     }
 
-    
+    async update(produto: Produto): Promise<Produto> {
+
+        let buscaProduto: Produto = await this.findById(produto.id);
+
+        if (!buscaProduto || !produto.id)
+            throw new HttpException('Produto não encontrado!', HttpStatus.NOT_FOUND);
+
+        return await this.produtoRepository.save(produto);
+    }
+
+
+
+
 }
